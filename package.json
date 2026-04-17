@@ -5,11 +5,11 @@
   "license": "ISC",
   "author": "Hansraj",
   "type": "commonjs",
-  "main": "index.js",
+  "main": "src/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node --watch src/app.js"
   },
   "dependencies": {
     "express": "^5.2.1"
   }
-}
+}  
