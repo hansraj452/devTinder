@@ -55,11 +55,6 @@ app.use("/second" , (req , res) =>{
     res.send("response second is send");
 })
 
-
-
-
-
-
 app.get("/admin/getalldata" , (req , res ) =>{
     console.log("control is now in the getalldata")
     res.send("all data is given")
