@@ -1,17 +1,97 @@
+const mongoose = require("mongoose");
+const { Schema } = mongoose;
+var validator = require("validator");
 
-const mongoose  = require("mongoose")
-const {Schema} = mongoose;
+const userSchema = new Schema(
+  {
+    firstName: {
+      type: String,
+      required: [true, "First name is required"],
+      minLength: [4, "First name must be at least 4 characters"],
+      maxLength: [20, "First name must not exceed 20 characters"],
+    },
+    lastName: {
+      type: String,
+    },
+    emailId: {
+      type: String,
+      required: [true, "Email is required"],
+      unique: true,
+      lowercase: true,
+      trim: true,
+    //   validate: {
+    //     validator: function (value) {
+    //       return validator.isEmail(value);
+    //     },
+    //     message: "Invalid email address",
+    //   },
+    validate(value){
+        if(!validator.isEmail(value)){
+            throw new Error ("Invalid email addres: " + value)
+        }
+    }
+    },
+    password: {
+      type: String,
+      validate(value){
+        if(!validator.isStrongPassword(value)){
+            throw new Error("Enter a strong password: " + value)
+        }
+      }
+    },
+    age: {
+      type: Number,
+    },
+    gender: {
+      type: String,
+      validate(value) {
+        if (!["male", "female", "other"].includes(value)) {
+          throw new Error("Gender input is not valid");
+        }
+      },
+    },
+    photoURL: {
+      type: String,
+      default: "https://pixabay.com/images/search/profile%20icon/",
+      validate(value){
+        if(!validator.isURL(value)){
+            throw new Error ("Invalid photo URl:" + value)
+        }
+      }
+    },
+    skill: {
+      type: [String],
+      //   validate: [
+      //     {
+      //       validator: function (value) {
+      //         return value.length < 5;
+      //       },
+      //       message: "only 5 skills are allowed",
+      //     },
+      //     {
+      //       validator: function (value) {
+      //         return value.length >= 1;
+      //       },
+      //       message: "At least 1 skill is required",
+      //     },
+      //   ],
+      type: [String],
+      validate: {
+        validator: function (value) {
+          return value.length >= 1 && value.length <= 5;
+        },
+        message: "Skills must be between 1 and 5",
+      },
+    },
+    about: {
+      type: String,
+      default: "This about section is not defined by User",
+    },
+  },
+  { timestamps: true },
+);
 
-const userSchema = new Schema({
-    firstName : {type : String},
-    lastName  : {type : String},
-    emailId   : {type : String},
-    password  : {type : String},
-    age       : {type : Number},
-    gender    : {type : String},
-    
-})
+// Model
+const User = mongoose.model("User", userSchema);
 
-const user = mongoose.model('user' , userSchema)
-
-module.exports = user;
+module.exports = User;
