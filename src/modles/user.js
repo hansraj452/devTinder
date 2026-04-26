@@ -9,9 +9,11 @@ const userSchema = new Schema(
       required: [true, "First name is required"],
       minLength: [4, "First name must be at least 4 characters"],
       maxLength: [20, "First name must not exceed 20 characters"],
+      trim:true
     },
     lastName: {
       type: String,
+      trim : true
     },
     emailId: {
       type: String,
@@ -19,12 +21,6 @@ const userSchema = new Schema(
       unique: true,
       lowercase: true,
       trim: true,
-    //   validate: {
-    //     validator: function (value) {
-    //       return validator.isEmail(value);
-    //     },
-    //     message: "Invalid email address",
-    //   },
     validate(value){
         if(!validator.isEmail(value)){
             throw new Error ("Invalid email addres: " + value)
@@ -61,24 +57,9 @@ const userSchema = new Schema(
     },
     skill: {
       type: [String],
-      //   validate: [
-      //     {
-      //       validator: function (value) {
-      //         return value.length < 5;
-      //       },
-      //       message: "only 5 skills are allowed",
-      //     },
-      //     {
-      //       validator: function (value) {
-      //         return value.length >= 1;
-      //       },
-      //       message: "At least 1 skill is required",
-      //     },
-      //   ],
-      type: [String],
       validate: {
         validator: function (value) {
-          return value.length >= 1 && value.length <= 5;
+          return value.length <= 5;
         },
         message: "Skills must be between 1 and 5",
       },
@@ -93,5 +74,4 @@ const userSchema = new Schema(
 
 // Model
 const User = mongoose.model("User", userSchema);
-
 module.exports = User;
