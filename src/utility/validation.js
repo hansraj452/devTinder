@@ -1,5 +1,6 @@
 
 const validator = require('validator')
+
 const validateSignupData = (req) =>{
     const {firstName , lastName , emailId , password} = req.body
     if(!firstName?.trim() || !lastName?.trim() || !emailId || !password){
@@ -14,6 +15,40 @@ const validateSignupData = (req) =>{
 
 }
 
+
+const allowedFieldUpdat = ["firstName","lastName","skill","photoURL",  "age"];
+const validateUpdateProfileData = (req) => {
+  const isUpdateAllowed = Object.keys(req.body).every((key) =>
+    allowedFieldUpdat.includes(key)
+  );
+
+  if (!isUpdateAllowed) return false;
+
+  if (req.body.photoUrl && !validator.isURL(req.body.photoUrl)) {
+    throw new Error("Photo url is not valid");
+  }
+
+  return true;
+};
+
+const passwordUpdateValidator = (req) => {
+  const { password, newPassword } = req.body;
+
+  if (!password || !newPassword) {
+    throw new Error("Both current and new password are required");
+  }
+
+  if (password === newPassword) {
+    throw new Error("New password must be different from old password");
+  }
+
+  if (!validator.isStrongPassword(newPassword)) {
+    throw new Error("Password is not strong enough");
+  }
+};
+
 module.exports = {
-    validateSignupData
+    validateSignupData,
+    validateUpdateProfileData,
+    passwordUpdateValidator
 }
