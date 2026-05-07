@@ -47,8 +47,17 @@ const passwordUpdateValidator = (req) => {
   }
 };
 
+const allowedStatus = ["ignored" , "interested"]
+const validateStatus = (status) =>{
+  if(!allowedStatus.includes(status)){
+    throw new Error("Inavlid status")
+  }
+  return true
+}
+
 module.exports = {
     validateSignupData,
     validateUpdateProfileData,
-    passwordUpdateValidator
+    passwordUpdateValidator,
+    validateStatus
 }
