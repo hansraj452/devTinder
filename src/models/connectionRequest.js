@@ -29,16 +29,17 @@ const connectionRequestSchema =  new Schema(
 )
 
 // pre is a kind of middle ware 
-connectionRequestSchema.pre('save', function(next) {
-    const connectionRequest = this;
+// connectionRequestSchema.pre("save", function (next) {
+//     const connectionRequest = this;
 
-    if (connectionRequest.fromUserId.equals(connectionRequest.toUserId)) {
-        throw new Error("Connection request cannot be sent to yourself!");
-    }
+//     if (connectionRequest.fromUserId.equals(connectionRequest.toUserId)) {
+//         return next(
+//             new Error("Connection request cannot be sent to yourself!")
+//         );
+//     }
 
-    
-    next();
-});
+//     next();
+// });
 connectionRequestSchema.index({ fromUserId: 1, toUserId: 1 });
 
 const ConnectionRequest = new mongoose.model('ConnectionRequest' , connectionRequestSchema);
