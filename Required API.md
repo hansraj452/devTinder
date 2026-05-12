@@ -17,7 +17,7 @@ Post/request/review/ignored/:requestId
 Post/request/review/reject/:requestId
 
 connection Request Router 
-Get/connections
-Get/request/requied
-Get/feed - get you the profile of other user
+Get/user/connection
+Get/user/request
+Get/user/feed - get you the profile of other user
 

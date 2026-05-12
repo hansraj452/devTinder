@@ -47,6 +47,9 @@ const passwordUpdateValidator = (req) => {
   }
 };
 
+
+
+//allowed status for send request 
 const allowedStatus = ["ignored" , "interested"]
 const validateStatus = (status) =>{
   if(!allowedStatus.includes(status)){
@@ -55,9 +58,19 @@ const validateStatus = (status) =>{
   return true
 }
 
+//allowed status for accepting or rejecting a request 
+const allowedActionRequest = ["accepted" , "rejected"]
+const allowedActionStatus = (status) =>{
+  if(!allowedActionRequest.includes(status)){
+    throw new Error('Inavlid status')
+  }
+  return true
+}
+
 module.exports = {
     validateSignupData,
     validateUpdateProfileData,
     passwordUpdateValidator,
-    validateStatus
+    validateStatus,
+    allowedActionStatus
 }
