@@ -52,7 +52,7 @@ const userSchema = new Schema(
     },
     photoURL: {
       type: String,
-      default: "https://pixabay.com/images/search/profile%20icon/",
+      default: "https://as1.ftcdn.net/v2/jpg/13/11/22/86/1000_F_1311228699_YoiLc5aJ3RWz3uRfdEtlV0UYSQjqf7RW.webp",
       validate(value){
         if(!validator.isURL(value)){
             throw new Error ("Invalid photo URl:" + value)
