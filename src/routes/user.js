@@ -4,15 +4,15 @@ const ConnectionRequest = require("../models/connectionRequest");
 const User = require("../models/user");
 
 const userRouter = express.Router();
-const userSafeData = "firstName lastName photoUrl age gender about skills";
+const userSafeData = "photoURL firstName lastName age gender about skills";
 
-userRouter.get("/user/request/received", userAuth, async (req, res) => {
+userRouter.get("/user/requests/recieved", userAuth, async (req, res) => {
   try {
     const logedInUser = req.user;
     const allPendingReauest = await ConnectionRequest.find({
       toUserId: logedInUser._id,
       status: "interested",
-    }).populate("fromUserId", ["firstName", "lastName"]);
+    }).populate("fromUserId", ["firstName", "lastName" , "age" , "gender" , "about" , "photoURL" , "skill"]);
 
     res
       .status(200)
@@ -77,7 +77,7 @@ userRouter.get("/feed", userAuth, async (req, res) => {
         {_id : {$nin : Array.from(hideUserFromFeed)}},
         {_id : {$ne : loggedInUser._id}}
       ]
-    }).select(userSafeData).skip(skip).limit(limit)
+    }).skip(skip).limit(limit)
     res.status(200).json({message : "Feed data fetched sucessfully" , user});
   } catch (err) {
     res.status(400).json({ Error: err.message });

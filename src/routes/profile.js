@@ -6,6 +6,7 @@ const {
 } = require("../utility/validation");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const User = require("../models/user");
 
 const profileRouter = express.Router();
 
@@ -13,7 +14,7 @@ const profileRouter = express.Router();
 profileRouter.get("/profile/view", userAuth, async (req, res) => {
   try {
     const user = req.user;
-    res.send({ message: "User login is successful", user });
+    res.send({ message: "Profile fetch successfully", user });
   } catch (err) {
     res.status(400).send({
       error: err.message,
