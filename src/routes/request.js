@@ -7,6 +7,7 @@ const {
 } = require("../utility/validation");
 const User = require("../models/user");
 const requestRouter = express.Router();
+const sendEmail = require("../utility/sendEmail");
 
 requestRouter.post(
   "/request/send/:status/:touserId",
@@ -16,19 +17,18 @@ requestRouter.post(
       const { status, touserId } = req.params;
       const fromUserId = req.user._id;
       const toUserId = touserId;
-
       const validUserRequest = await User.findById(toUserId);
       if (!validUserRequest) {
         return res.status(404).json({ message: "No User Found with given Id" });
       }
-      if (fromUserId === toUserId) {
-        throw new Error("Can not send request to it self");
-      }
+     if (fromUserId.toString() === toUserId) {
+  throw new Error("Cannot send request to yourself");
+}
 
       const existingConnectionRequest = await ConnectionRequest.findOne({
         $or: [
           { fromUserId, toUserId },
-          { fromUserId: toUserId, touserId: fromUserId },
+          { fromUserId: toUserId, toUserId: fromUserId },
         ],
       });
 
@@ -46,8 +46,13 @@ requestRouter.post(
         status,
       });
       const data = await connectionRequest.save();
+      const emailRes = await sendEmail.run(
+        `A New friend Request is received from ${req.user.firstName} ${req.user.lastName}`,
+        `${req.user.firstName} ${req.user.lastName} sent you a connection request`,
+      );
+      console.log(emailRes);
       res.json({
-        message: "Connection Request Sent Successfully",
+        message: "Connection Request Sent Successfully ",
         data,
       });
     } catch (err) {

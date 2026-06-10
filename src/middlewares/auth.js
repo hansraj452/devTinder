@@ -7,7 +7,7 @@ const userAuth = async(req, res, next) => {
     if(!token){
         return res.status(401).send("Please Login!")
     }
-    const decode = await jwt.verify(token , "DEV@TINDER$9970")
+    const decode = await jwt.verify(token , process.env.JWT_SECRET)
     const user = await User.findById(decode._id)
     if(!user){
         throw new Error("User not found");

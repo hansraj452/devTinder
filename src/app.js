@@ -6,6 +6,7 @@ const profileRouter = require('./routes/profile')
 const requestRouter = require('./routes/request');
 const userRouter = require("./routes/user");
 const cors = require('cors')
+require('dotenv').config()
 
 const app = express();
 
@@ -35,8 +36,8 @@ app.use('/' , userRouter )
 connectDB()
   .then(() => {
     console.log("DB Connected successfully");
-    app.listen("8000", () => {
-      console.log(`Server is on running port ${8000}`);
+    app.listen(process.env.PORT, () => {
+      console.log(`Server is on running port ${process.env.PORT}`);
     });
   })
   .catch((error) => {
