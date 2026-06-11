@@ -21,7 +21,7 @@ requestRouter.post(
       if (!validUserRequest) {
         return res.status(404).json({ message: "No User Found with given Id" });
       }
-     if (fromUserId.toString() === toUserId) {
+     if (fromUserId.toString() === toUserId.toString()) {
   throw new Error("Cannot send request to yourself");
 }
 
@@ -50,7 +50,6 @@ requestRouter.post(
         `A New friend Request is received from ${req.user.firstName} ${req.user.lastName}`,
         `${req.user.firstName} ${req.user.lastName} sent you a connection request`,
       );
-      console.log(emailRes);
       res.json({
         message: "Connection Request Sent Successfully ",
         data,
