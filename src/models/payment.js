@@ -40,6 +40,7 @@ const paymentSchema = new Schema({
         }, 
         membershipType:{
             type:String,
+            default :"standard"
         }
     }
 
