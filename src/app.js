@@ -5,7 +5,9 @@ const authRouter = require("./routes/auth")
 const profileRouter = require('./routes/profile')
 const requestRouter = require('./routes/request');
 const userRouter = require("./routes/user");
+const paymentRouter = require("./routes/payment");
 const cors = require('cors')
+const cronJob = require('./utility/cornJob');
 require('dotenv').config()
 
 const app = express();
@@ -33,9 +35,15 @@ app.use('/' , requestRouter)
 //User router
 app.use('/' , userRouter )
 
+//payment router
+app.use('/' , paymentRouter)
+
 connectDB()
   .then(() => {
     console.log("DB Connected successfully");
+    
+    cronJob();
+
     app.listen(process.env.PORT, () => {
       console.log(`Server is on running port ${process.env.PORT}`);
     });

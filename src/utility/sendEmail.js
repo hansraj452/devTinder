@@ -38,17 +38,17 @@ const createSendEmailCommand = (toAddress, fromAddress , subject , body) => {
   });
 };
 
-const run = async (subject , body) => {
+const run = async ({ to, subject, html }) => {
+  try{
   const sendEmailCommand = createSendEmailCommand(
     "hrs638698@gmail.com",
     "devtinder@DEVTINDERS.WORK.GD",
     subject,
-    body
-  );
-
-  try {
-    return await sesClient.send(sendEmailCommand);
-  } catch (caught) {
+    html
+  )
+  return await sesClient.send(sendEmailCommand)
+  }
+   catch (caught) {
     if (caught instanceof Error && caught.name === "MessageRejected") {
       const messageRejectedError = caught;
       return messageRejectedError;
@@ -59,3 +59,4 @@ const run = async (subject , body) => {
 
 // snippet-end:[ses.JavaScript.email.sendEmailV3]
 module.exports = { run };
+
