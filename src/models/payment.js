@@ -6,26 +6,26 @@ const paymentSchema = new Schema({
     userId:{
         type:mongoose.Types.ObjectId,
         ref : "User",
-        require:true,
+        required : true,
     },
     paymentId:{
         type: String,
     },
     orderId:{
         type:String,
-        require:true,
+        required:true,
     },
     status:{
         type: String,
-        require: true,
+        required: true,
     },
     amount:{
         type:Number,
-        require: true,
+        required: true,
     }, 
     currency:{
         type:String,
-        require :true,
+        required :true,
     },
     receipt:{
         type:String,

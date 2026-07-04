@@ -89,10 +89,17 @@ paymentRouter.post("payment/webhook", async (req, res) => {
 
 paymentRouter.get("/premium/verify", userAuth, (req, res) => {
   const user = req.user;
-  if (user.isPremium) {
-    return res.json({ premium: isPremium });
+
+  // Safety check in case user object wasn't populated properly by userAuth
+  if (!user) {
+    return res.status(404).json({ premium: false, msg: "User context not found" });
   }
-  return res.json({ premium: isPremium });
+
+  if (user.isPremium) {
+    return res.json({ premium: user.isPremium, memberShipType: user.memberShipType });
+  }
+  
+  return res.json({ premium: false });
 });
 
 module.exports = paymentRouter;

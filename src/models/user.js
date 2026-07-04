@@ -4,8 +4,6 @@ var validator = require("validator");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-
-
 const userSchema = new Schema(
   {
     firstName: {
