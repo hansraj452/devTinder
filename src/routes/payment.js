@@ -99,7 +99,7 @@ paymentRouter.get("/premium/verify", userAuth, (req, res) => {
     return res.json({ premium: user.isPremium, memberShipType: user.memberShipType });
   }
 
-  return res.json({ premium: false });
+  return res.json({ premium: false , memberShipType: user.memberShipType , message : "verify call hua pr false ke sath" ,premium: user.isPremium });
 });
 
 module.exports = paymentRouter;
