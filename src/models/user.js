@@ -50,6 +50,17 @@ const userSchema = new Schema(
         }
       },
     },
+
+    isPremium :{
+      type: Boolean,
+      default : false,
+
+    },
+    
+    memberShipType :{
+      type : String,
+    },
+
     photoURL: {
       type: String,
       default: "https://as1.ftcdn.net/v2/jpg/13/11/22/86/1000_F_1311228699_YoiLc5aJ3RWz3uRfdEtlV0UYSQjqf7RW.webp",
