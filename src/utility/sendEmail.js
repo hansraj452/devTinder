@@ -39,19 +39,17 @@ const createSendEmailCommand = (toAddress, fromAddress , subject , body) => {
 };
 
 const run = async ({ to, subject, html }) => {
-  try{
-  const sendEmailCommand = createSendEmailCommand(
-    "hrs638698@gmail.com",
-    "devtinder@DEVTINDERS.WORK.GD",
-    subject,
-    html
-  )
-  return await sesClient.send(sendEmailCommand)
-  }
-   catch (caught) {
+  try {
+    const sendEmailCommand = createSendEmailCommand(
+      to, // <-- Use the dynamic 'to' address here instead of the hardcoded string
+      "devtinder@DEVTINDERS.WORK.GD",
+      subject,
+      html
+    );
+    return await sesClient.send(sendEmailCommand);
+  } catch (caught) {
     if (caught instanceof Error && caught.name === "MessageRejected") {
-      const messageRejectedError = caught;
-      return messageRejectedError;
+      return caught;
     }
     throw caught;
   }

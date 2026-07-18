@@ -24,6 +24,7 @@ userRouter.get("/user/requests/recieved", userAuth, async (req, res) => {
   }
 });
 
+//user connections
 userRouter.get("/user/connections", userAuth, async (req, res) => {
   try {
     const loggedInUser = req.user;
@@ -56,6 +57,7 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
   }
 });
 
+//feed
 userRouter.get("/feed", userAuth, async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
@@ -83,6 +85,16 @@ userRouter.get("/feed", userAuth, async (req, res) => {
     res.status(400).json({ Error: err.message });
   }
 });
+
+//get User by Id
+userRouter.get("/user/:id" , async(req , res) =>{
+  const {id} = req.params;
+  const user = await User.findById(id)
+  if(!user){
+     return res.status(400).json({message : "User not found"});
+  }
+  res.send(user);
+})
 
 module.exports = userRouter;
    

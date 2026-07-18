@@ -8,9 +8,14 @@ const userRouter = require("./routes/user");
 const paymentRouter = require("./routes/payment");
 const cors = require('cors')
 const cronJob = require('./utility/cornJob');
+const initializeSocket = require('./utility/socketIo')
+const http = require('http');
+const chatRoueter = require("./routes/chat");
 require('dotenv').config()
 
 const app = express();
+const server = http.createServer(app);
+initializeSocket(server)
 
 // Middle ware
 app.use(express.json());
@@ -38,13 +43,16 @@ app.use('/' , userRouter )
 //payment router
 app.use('/' , paymentRouter)
 
+//chat 
+app.use('/' , chatRoueter)
+
 connectDB()
   .then(() => {
     console.log("DB Connected successfully");
     
     cronJob();
 
-    app.listen(process.env.PORT, () => {
+    server.listen(process.env.PORT, () => {
       console.log(`Server is on running port ${process.env.PORT}`);
     });
   })

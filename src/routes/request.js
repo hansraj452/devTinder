@@ -18,12 +18,14 @@ requestRouter.post(
       const fromUserId = req.user._id;
       const toUserId = touserId;
       const validUserRequest = await User.findById(toUserId);
+
       if (!validUserRequest) {
         return res.status(404).json({ message: "No User Found with given Id" });
       }
-     if (fromUserId.toString() === toUserId.toString()) {
-  throw new Error("Cannot send request to yourself");
-}
+
+      if (fromUserId.toString() === toUserId.toString()) {
+        throw new Error("Cannot send request to yourself");
+      }
 
       const existingConnectionRequest = await ConnectionRequest.findOne({
         $or: [
@@ -40,16 +42,24 @@ requestRouter.post(
       }
 
       validateStatus(status);
+
       const connectionRequest = new ConnectionRequest({
         fromUserId,
         toUserId,
         status,
       });
+
       const data = await connectionRequest.save();
-      const emailRes = await sendEmail.run(
-        `A New friend Request is received from ${req.user.firstName} ${req.user.lastName}`,
-        `${req.user.firstName} ${req.user.lastName} sent you a connection request`,
-      );
+
+      // Email service call has been removed from here
+      if (status === "interested") {
+        await sendEmail.run({
+          to: validUserRequest.emailId, // Pass the recipient's email dynamically
+          subject: `A New friend Request from ${req.user.firstName} ${req.user.lastName}`,
+          html: `${req.user.firstName} ${req.user.lastName} sent you a connection request.`,
+        });
+      }
+
       res.json({
         message: "Connection Request Sent Successfully ",
         data,
